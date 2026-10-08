@@ -1,0 +1,10 @@
+# Python 3.10+
+# If the default torch wheel does not match your GPU, install torch/torchvision
+# from https://pytorch.org then install the rest of this file.
+torch
+torchvision
+opencv-python
+Pillow
+numpy
+matplotlib
+scikit-learn
