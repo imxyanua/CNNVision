@@ -1,0 +1,50 @@
+# Local unpublished docs (remove an entry when the user asks to publish it)
+/NOTE.md
+/RULE.md
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+dist/
+build/
+.venv/
+venv/
+env/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Dataset images (keep the folder)
+dataset/*
+!dataset/.gitkeep
+
+# Checkpoints and exported models
+*.pth
+*.pt
+*.ckpt
+*.onnx
+*.h5
+
+# Training / eval outputs
+outputs/
+runs/
+wandb/
+
+# Environment and secrets
+.env
+.env.*
+
+# Local working notes (do not create these folders just to have them)
+notes/
+drafts/
+docs/local/
+
+# OS and editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
