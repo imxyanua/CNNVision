@@ -1,5 +1,3 @@
-"""Shared train and eval transforms. Augmentation is training-only."""
-
 from pathlib import Path
 
 import torch
@@ -9,6 +7,7 @@ from preprocessing.image import load_image
 
 DEFAULT_IMAGE_SIZE = 224
 DEFAULT_COLOR_MODE = "rgb"
+# From-scratch CNN: ToTensor() already scales pixels to [0, 1]. Do not use ImageNet mean/std.
 NORMALIZE = "to_tensor_0_1"
 
 
@@ -16,9 +15,9 @@ def preprocess_settings(
     image_size: int = DEFAULT_IMAGE_SIZE,
     color_mode: str = DEFAULT_COLOR_MODE,
 ) -> dict[str, int | str | None]:
-    """Settings that must be reused at validation, test, and inference."""
     if image_size <= 0:
         raise ValueError(f"image_size must be positive, got {image_size}")
+    # Store these on the checkpoint later so inference uses the same resize and color mode.
     return {
         "image_size": image_size,
         "color_mode": color_mode,
@@ -33,16 +32,12 @@ def build_transforms(
     *,
     augment: bool = False,
 ) -> transforms.Compose:
-    """Build the pipeline that turns a PIL image into a float tensor in [0, 1].
-
-    Train (augment=True): random crop/zoom, horizontal flip, small rotation, brightness.
-    Eval and inference (augment=False): resize only, then ToTensor.
-    """
     if image_size <= 0:
         raise ValueError(f"image_size must be positive, got {image_size}")
 
     ops: list[object] = []
     if augment:
+        # Training only. Eval and inference must not take this branch.
         ops.extend(
             [
                 transforms.RandomResizedCrop(image_size, scale=(0.8, 1.0)),
@@ -52,7 +47,9 @@ def build_transforms(
             ]
         )
     else:
+        # Same output size as training, without random crop/zoom.
         ops.append(transforms.Resize((image_size, image_size)))
+    # Converts HWC PIL image to CHW float tensor in [0, 1].
     ops.append(transforms.ToTensor())
     return transforms.Compose(ops)
 
@@ -72,7 +69,6 @@ def preprocess_image(
     color_mode: str = DEFAULT_COLOR_MODE,
     augment: bool = False,
 ) -> torch.Tensor:
-    """Load one image and apply the shared transforms. Inference must use augment=False."""
     image = load_image(path, color_mode=color_mode)
     tensor = build_transforms(image_size, augment=augment)(image)
     if not isinstance(tensor, torch.Tensor):

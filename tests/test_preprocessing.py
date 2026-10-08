@@ -1,5 +1,3 @@
-"""CPU tests for image loading and shared train/eval transforms."""
-
 import tempfile
 import unittest
 from pathlib import Path
@@ -33,6 +31,7 @@ class PreprocessingTest(unittest.TestCase):
         self._tmpdir.cleanup()
 
     def test_eval_tensor_shape_and_range(self) -> None:
+        # Non-square 40x32 PNG must become 3x64x64 float in [0, 1].
         tensor = preprocess_image(self.image_path, image_size=64, augment=False)
         self.assertEqual(tuple(tensor.shape), (3, 64, 64))
         self.assertEqual(tensor.dtype, torch.float32)
@@ -54,6 +53,7 @@ class PreprocessingTest(unittest.TestCase):
         self.assertTrue(torch_equal(first, second))
 
     def test_train_transforms_include_augmentation(self) -> None:
+        # Random ops belong on train only; eval is Resize + ToTensor.
         train_ops = type_names(build_train_transforms(64))
         eval_ops = type_names(build_eval_transforms(64))
         self.assertIn("RandomResizedCrop", train_ops)
