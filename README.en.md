@@ -91,7 +91,7 @@ Requires `models/best_model.pth`. The page calls `inference.predict_image` and d
 streamlit run app.py
 ```
 
-Switch English / 中文 / Tiếng Việt. The photo fills the frame; class and confidence sit on a caption plate; the schematic is folded away. Default URL: [http://localhost:8501](http://localhost:8501). This labels the whole image, and does not draw boxes around objects.
+Switch English / 中文 / Tiếng Việt. Settings and the photo on the left; the schematic stays visible on the right. Default URL: [http://localhost:8501](http://localhost:8501). This labels the whole image, and does not draw boxes around objects.
 
 ## Google Colab
 

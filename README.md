@@ -91,7 +91,7 @@ python predict.py --image path/to/image.jpg --checkpoint models/best_model.pth
 streamlit run app.py
 ```
 
-页面可切换 中文 / English / Tiếng Việt。画框放大图，下方是类别与置信度；示意图放在折叠区。默认打开 [http://localhost:8501](http://localhost:8501)。这是整图单标签分类，不会框出图中每个物体。
+页面可切换 中文 / English / Tiếng Việt。左侧设置与图片，右侧示意图始终显示。默认打开 [http://localhost:8501](http://localhost:8501)。这是整图单标签分类，不会框出图中每个物体。
 
 ## Google Colab
 

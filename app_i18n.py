@@ -8,6 +8,7 @@ TEXT = {
     "vi": {
         "subtitle": "Gán một nhãn cho cả tấm ảnh. Không khoanh từng vật trong hình.",
         "language": "Ngôn ngữ",
+        "lang_bar": "Ngôn ngữ  ·  语言  ·  Language",
         "checkpoint": "Checkpoint",
         "checkpoint_help": "File .pth sau khi train. Tên class lấy từ folder dataset.",
         "upload": "Chọn ảnh",
@@ -23,6 +24,7 @@ TEXT = {
     "zh": {
         "subtitle": "给整张图片一个类别。不会框出图中的每个物体。",
         "language": "语言",
+        "lang_bar": "Ngôn ngữ  ·  语言  ·  Language",
         "checkpoint": "Checkpoint",
         "checkpoint_help": "训练后的 .pth 文件。类别名来自数据集文件夹。",
         "upload": "选择图片",
@@ -38,6 +40,7 @@ TEXT = {
     "en": {
         "subtitle": "Assigns one label to the whole image. It does not box objects in the photo.",
         "language": "Language",
+        "lang_bar": "Ngôn ngữ  ·  语言  ·  Language",
         "checkpoint": "Checkpoint",
         "checkpoint_help": "The .pth file from training. Class names come from dataset folders.",
         "upload": "Choose an image",
