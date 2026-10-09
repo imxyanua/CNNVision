@@ -91,7 +91,7 @@ python predict.py --image path/to/image.jpg --checkpoint models/best_model.pth
 streamlit run app.py
 ```
 
-浏览器中上传图片：左侧为原图，右侧为类别与置信度，下方为示意神经网络（输出节点按 Softmax 点亮，不是 CNN 内部真实激活）。默认打开 [http://localhost:8501](http://localhost:8501)。这是整图单标签分类，不会框出图中每个物体。
+页面可切换 中文 / English / Tiếng Việt。左侧为原图，右侧为类别与置信度，下方为示意图。默认打开 [http://localhost:8501](http://localhost:8501)。这是整图单标签分类，不会框出图中每个物体。
 
 ## Google Colab
 

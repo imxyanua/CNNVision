@@ -91,7 +91,7 @@ Cần có `models/best_model.pth`. Trang gọi `inference.predict_image`, không
 streamlit run app.py
 ```
 
-Upload ảnh: trái là ảnh, phải là class và độ tin cậy, dưới là sơ đồ nơ-ron minh họa (nốt lớp ra sáng theo Softmax, không phải activation thật trong CNN). Mặc định: [http://localhost:8501](http://localhost:8501). Đây là gắn một nhãn cho cả tấm, không khoanh từng vật.
+Đổi ngôn ngữ trên trang: Tiếng Việt / 中文 / English. Trái ảnh, phải class và độ tin cậy, dưới sơ đồ minh họa. Mặc định: [http://localhost:8501](http://localhost:8501). Gắn một nhãn cho cả tấm, không khoanh từng vật.
 
 ## Google Colab
 
