@@ -54,8 +54,8 @@ TEXT = {
 
 
 def translate(lang: str, key: str) -> str:
-    if lang not in TEXT:
-        lang = "vi"
-    if key not in TEXT[lang]:
-        raise KeyError(f"Missing text key {key!r} for {lang}")
-    return TEXT[lang][key]
+    for code in (lang, "vi", "en"):
+        table = TEXT.get(code, {})
+        if key in table:
+            return table[key]
+    return key

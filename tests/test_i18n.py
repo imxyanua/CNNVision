@@ -13,6 +13,5 @@ class I18nTest(unittest.TestCase):
     def test_translate_falls_back_to_vietnamese(self) -> None:
         self.assertEqual(translate("nope", "upload"), TEXT["vi"]["upload"])
 
-    def test_missing_key_raises(self) -> None:
-        with self.assertRaises(KeyError):
-            translate("en", "not_a_real_key")
+    def test_unknown_key_returns_the_key(self) -> None:
+        self.assertEqual(translate("en", "not_a_real_key"), "not_a_real_key")
