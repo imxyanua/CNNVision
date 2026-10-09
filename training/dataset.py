@@ -46,6 +46,7 @@ def build_dataloaders(
     batch_size: int = 32,
     seed: int = DEFAULT_SEED,
     num_workers: int = 0,
+    pin_memory: bool = False,
     resplit: bool = False,
     split_file: str | Path | None = None,
 ) -> tuple[dict[str, DataLoader], DatasetSplit]:
@@ -68,6 +69,7 @@ def build_dataloaders(
             batch_size=batch_size,
             shuffle=True,
             num_workers=num_workers,
+            pin_memory=pin_memory,
             generator=torch.Generator().manual_seed(seed),
         ),
         "val": DataLoader(
@@ -79,6 +81,7 @@ def build_dataloaders(
             batch_size=batch_size,
             shuffle=False,
             num_workers=num_workers,
+            pin_memory=pin_memory,
         ),
         "test": DataLoader(
             ImageClassificationDataset(
@@ -89,6 +92,7 @@ def build_dataloaders(
             batch_size=batch_size,
             shuffle=False,
             num_workers=num_workers,
+            pin_memory=pin_memory,
         ),
     }
     return loaders, dataset_split
