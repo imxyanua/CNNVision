@@ -12,14 +12,14 @@ def probability_network_svg(
     if not classes:
         raise ValueError("probabilities is empty")
 
-    width, height = 860, 340
+    width, height = 1100, 580
     layers = [
-        _layer_points(72, 7, height),
-        _layer_points(290, 9, height),
-        _layer_points(510, 9, height),
-        _layer_points(720, len(classes), height),
+        _layer_points(80, 7, height),
+        _layer_points(360, 9, height),
+        _layer_points(650, 9, height),
+        _layer_points(920, len(classes), height),
     ]
-    titles = [(72, "INPUT"), (290, "CONV"), (510, "FEATURES"), (720, "CLASSES")]
+    titles = [(80, "INPUT"), (360, "CONV"), (650, "FEATURES"), (920, "CLASSES")]
 
     parts: list[str] = []
     path_id = 0
@@ -34,7 +34,7 @@ def probability_network_svg(
                 pid = f"p{path_id}"
                 path_id += 1
                 alpha = 0.10 + (0.55 * float(prob) if last else 0.08)
-                color = "rgba(80,255,210,0.85)" if hot else f"rgba(130,190,255,{alpha:.2f})"
+                color = "rgba(150,190,255,0.9)" if hot else f"rgba(160,180,220,{0.16 + alpha:.2f})"
                 packet = t == 0 or hot
                 parts.append(_synapse(x1, y1, x2, y2, pid, color, hot=hot, packet=packet, delay=(path_id % 9) * 0.18))
 
@@ -43,20 +43,20 @@ def probability_network_svg(
             if i == 3:
                 name, prob = classes[j]
                 active = name == predicted
-                radius = 9 + 10 * float(prob)
-                fill = "#5cffd0" if active else "#7ec8ff"
+                radius = 13 + 12 * float(prob)
+                fill = "#9ec0ff" if active else "#8a97b0"
                 parts.append(_node(x, y, radius, fill, glow=active, delay=0.15 * j, ping=active, core=True))
                 label = html.escape(str(name))
                 parts.append(
-                    f'<text x="{x + 24}" y="{y + 4}" fill="#e8f3ff" font-size="14" '
+                    f'<text x="{x + 28}" y="{y + 5}" fill="#ecece6" font-size="16" '
                     f'font-family="Segoe UI, sans-serif">{label} {float(prob) * 100:.0f}%</text>'
                 )
             else:
-                fill = "#9aa7ff" if i else "#7ec8ff"
-                parts.append(_node(x, y, 8 if i else 7, fill, glow=False, delay=0.1 * j, ping=False, core=True))
+                fill = "#7d8aa3" if i else "#9aa8c4"
+                parts.append(_node(x, y, 12 if i else 11, fill, glow=False, delay=0.1 * j, ping=False, core=True))
 
     heading = "".join(
-        f'<text x="{x}" y="22" fill="#7f97bc" font-size="11" font-family="Segoe UI, sans-serif">{title}</text>'
+        f'<text x="{x}" y="26" fill="#b3b3aa" font-size="14" font-family="Segoe UI, sans-serif">{title}</text>'
         for x, title in titles
     )
     return _wrap(width, height, heading + "".join(parts))
@@ -106,7 +106,7 @@ def _synapse(
     )
     if not packet:
         return path
-    spark_fill = "#e7fff7" if hot else "#b9dcff"
+    spark_fill = "#d4e4ff" if hot else "#8eb0d8"
     spark = (
         f'<circle class="spark" r="{3.6 if hot else 2.6}" fill="{spark_fill}">'
         f'<animateMotion dur="{dur}s" repeatCount="indefinite" begin="{delay:.2f}s">'
@@ -137,16 +137,16 @@ def _node(
     if core:
         body += (
             f'<circle cx="{x:.1f}" cy="{y:.1f}" r="{max(2.0, radius * 0.35):.1f}" '
-            f'fill="#f4fbff" opacity="0.85"/>'
+            f'fill="#ecece6" opacity="0.85"/>'
         )
     if ping:
         body += (
             f'<circle class="ping" cx="{x:.1f}" cy="{y:.1f}" r="{radius:.1f}" '
-            f'fill="none" stroke="#5cffd0" stroke-width="2"/>'
+            f'fill="none" stroke="#9ec0ff" stroke-width="2"/>'
         )
         body += (
             f'<circle class="ping ping-slow" cx="{x:.1f}" cy="{y:.1f}" r="{radius:.1f}" '
-            f'fill="none" stroke="#7ec8ff" stroke-width="1.2"/>'
+            f'fill="none" stroke="#8a97b0" stroke-width="1.2"/>'
         )
     return body
 
@@ -154,7 +154,7 @@ def _node(
 def _wrap(width: int, height: int, inner: str) -> str:
     return (
         f'<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" '
-        f'viewBox="0 0 {width} {height}" width="100%" role="img" aria-label="CNN schematic">'
+        f'viewBox="0 0 {width} {height}" width="100%" style="background:#10131a" role="img" aria-label="CNN schematic">'
         "<defs>"
         '<filter id="glow" x="-80%" y="-80%" width="260%" height="260%">'
         '<feGaussianBlur stdDeviation="4.5" result="blur"/>'
@@ -174,7 +174,7 @@ def _wrap(width: int, height: int, inner: str) -> str:
         ".ping-slow { animation-duration: 2s; animation-delay: 0.4s; }"
         "</style>"
         "</defs>"
-        f'<rect width="{width}" height="{height}" rx="18" fill="#080d1a"/>'
+        f'<rect width="{width}" height="{height}" rx="14" fill="#10131a" stroke="rgba(255,255,255,0.08)"/>'
         f"{inner}"
         "</svg>"
     )

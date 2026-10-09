@@ -5,6 +5,7 @@ from pathlib import Path
 
 import streamlit as st
 
+from app_i18n import LANG_LABELS, translate
 from inference.predict import predict_image
 from visualization.neurons import idle_network_svg, probability_network_svg
 
@@ -24,186 +25,188 @@ st.set_page_config(page_title="CNNVision", layout="wide", initial_sidebar_state=
 st.markdown(
     """
     <style>
-      @keyframes aurora {
-        0% { background-position: 0% 40%; }
-        100% { background-position: 100% 60%; }
+      @keyframes driftA {
+        0% { transform: translate(0, 0) scale(1); }
+        50% { transform: translate(10%, 14%) scale(1.18); }
+        100% { transform: translate(-8%, 6%) scale(1); }
       }
-      @keyframes gridShift {
-        from { background-position: 0 0, 0 0; }
-        to { background-position: 32px 32px, 32px 32px; }
+      @keyframes driftB {
+        0% { transform: translate(0, 0) scale(1.05); }
+        50% { transform: translate(-12%, -8%) scale(1.2); }
+        100% { transform: translate(8%, 10%) scale(1); }
       }
-      @keyframes shine {
-        0% { background-position: 0% 50%; }
-        100% { background-position: 200% 50%; }
+      @keyframes driftC {
+        0% { transform: translate(0, 0); }
+        50% { transform: translate(8%, -12%); }
+        100% { transform: translate(-10%, 8%); }
       }
-      @keyframes glowText {
-        0%, 100% { text-shadow: 0 0 8px rgba(125, 255, 224, 0.35); }
-        50% { text-shadow: 0 0 26px rgba(125, 255, 224, 0.95); }
+      .stApp, [data-testid="stAppViewContainer"], [data-testid="stHeader"] {
+        background: #10131a;
+        color: #ecece6;
       }
-      @keyframes fadeUp {
-        from { opacity: 0; transform: translateY(14px); }
-        to { opacity: 1; transform: none; }
-      }
-      @keyframes growBar {
-        from { transform: scaleX(0); }
-        to { transform: scaleX(var(--p, 0)); }
-      }
-      @keyframes scan {
-        0% { top: -20%; }
-        100% { top: 120%; }
-      }
-      .stApp {
-        background:
-          radial-gradient(900px 420px at 12% -8%, #243868 0%, transparent 55%),
-          radial-gradient(700px 380px at 100% 0%, #163f38 0%, transparent 50%),
-          linear-gradient(120deg, #070a12, #0c1428, #070a12);
-        background-size: 140% 140%;
-        animation: aurora 16s ease-in-out infinite alternate;
-        color: #e8eefc;
-      }
-      .stApp::before {
-        content: "";
-        position: fixed;
-        inset: 0;
-        pointer-events: none;
-        background-image:
-          linear-gradient(rgba(90, 150, 255, 0.05) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(90, 150, 255, 0.05) 1px, transparent 1px);
-        background-size: 32px 32px;
-        animation: gridShift 12s linear infinite;
-        z-index: 0;
-      }
-      .block-container { padding-top: 1.2rem; max-width: 1200px; position: relative; z-index: 1; }
-      .hero-title {
-        font-size: 2.5rem;
-        font-weight: 800;
-        letter-spacing: 0.12em;
-        margin: 0;
-        background: linear-gradient(90deg, #7dffe0, #7ec8ff, #b28cff, #7dffe0);
-        background-size: 220% auto;
-        -webkit-background-clip: text;
-        background-clip: text;
-        -webkit-text-fill-color: transparent;
-        animation: shine 5s linear infinite;
-      }
-      .hero-sub { color: #9db0d0; margin: 0.35rem 0 1.1rem; }
-      .pred-card {
-        border: 1px solid #2a4d7a;
-        background: linear-gradient(180deg, #142038 0%, #0c1322 100%);
-        border-radius: 18px;
-        padding: 1.1rem 1.2rem 0.5rem;
-        box-shadow: 0 0 28px rgba(80, 255, 210, 0.12);
-        animation: fadeUp 0.45s ease;
-        position: relative;
+      [data-testid="stMarkdownContainer"] { background: transparent !important; }
+      .block-container { padding-top: 0.8rem; max-width: 1600px; }
+      .schema-box {
+        background: #10131a;
+        border-radius: 14px;
         overflow: hidden;
       }
-      .pred-card::after {
-        content: "";
-        position: absolute;
-        left: 0;
-        width: 100%;
-        height: 28%;
-        background: linear-gradient(180deg, transparent, rgba(125, 255, 224, 0.12), transparent);
-        animation: scan 2.8s linear infinite;
+      .schema-box svg {
+        min-height: 520px;
+        background: #10131a;
+        display: block;
       }
-      .pred-class {
-        font-size: 2.2rem;
+      header[data-testid="stHeader"] { background: transparent; }
+      .orbs span {
+        position: fixed;
+        border-radius: 50%;
+        filter: blur(70px);
+        opacity: 0.5;
+        pointer-events: none;
+        z-index: 0;
+      }
+      .orbs span:nth-child(1) {
+        width: 460px; height: 460px; background: #2b3f73; top: -120px; left: -80px;
+        animation: driftA 16s ease-in-out infinite;
+      }
+      .orbs span:nth-child(2) {
+        width: 380px; height: 380px; background: #1e4a3f; right: -60px; top: 12%;
+        animation: driftB 18s ease-in-out infinite;
+      }
+      .orbs span:nth-child(3) {
+        width: 320px; height: 320px; background: #4a2e4a; bottom: -80px; left: 28%;
+        animation: driftC 20s ease-in-out infinite;
+      }
+      .block-container { position: relative; z-index: 1; }
+      .brand { font-size: 1.05rem; letter-spacing: 0.28em; margin: 0; text-transform: uppercase; }
+      .brand-sub { color: #b3b3aa; margin: 0.3rem 0 0.8rem; }
+      .lang-label {
+        font-size: 0.95rem;
         font-weight: 700;
-        color: #7dffe0;
-        line-height: 1.1;
-        animation: glowText 2.2s ease-in-out infinite;
-        position: relative;
-        z-index: 1;
+        letter-spacing: 0.04em;
+        margin: 0 0 0.45rem;
       }
-      .pred-score { color: #c5d4f0; font-size: 1.05rem; margin: 0.35rem 0 0.8rem; position: relative; z-index: 1; }
-      .prob-row { display: flex; align-items: center; gap: 0.7rem; margin: 0.4rem 0; position: relative; z-index: 1; }
-      .prob-name { width: 7rem; color: #c5d4f0; }
-      .prob-track {
-        flex: 1; height: 10px; background: #18233a; border-radius: 99px; overflow: hidden;
+      .panel {
+        background: rgba(18, 20, 28, 0.72);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 14px;
+        padding: 0.85rem 0.95rem 1rem;
+        backdrop-filter: blur(10px);
+        margin-bottom: 0.8rem;
       }
-      .prob-fill {
-        height: 100%;
-        width: 100%;
-        transform-origin: left center;
-        transform: scaleX(var(--p, 0));
-        background: linear-gradient(90deg, #3d7dff, #5cffd0);
-        box-shadow: 0 0 12px rgba(92, 255, 208, 0.6);
-        animation: growBar 0.8s ease both;
+      .panel h3 { margin: 0 0 0.55rem; font-size: 0.95rem; letter-spacing: 0.08em; text-transform: uppercase; }
+      .stage {
+        background: rgba(8, 8, 10, 0.65);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 14px;
+        min-height: 240px;
+        padding: 0.7rem;
       }
-      .prob-val { width: 3.2rem; text-align: right; color: #9db0d0; font-variant-numeric: tabular-nums; }
-      div[data-testid="stImage"] img {
-        border-radius: 16px;
-        box-shadow: 0 0 0 1px #2a4d7a, 0 0 24px rgba(80, 160, 255, 0.25);
-        animation: fadeUp 0.45s ease;
+      .plate {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.8rem 1.1rem;
+        align-items: baseline;
+        margin-top: 0.7rem;
       }
+      .plate-class { font-size: 1.7rem; font-weight: 700; margin: 0; }
+      .plate-score { color: #c5c5bc; margin: 0; }
+      .chips { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+      .chip {
+        border: 1px solid rgba(255,255,255,0.16);
+        padding: 0.18rem 0.5rem;
+        font-size: 0.82rem;
+        border-radius: 999px;
+      }
+      .chip-on { background: #efefe9; color: #111; border-color: #efefe9; }
+      div[data-testid="stImage"] img { width: 100%; border-radius: 8px; }
     </style>
+    <div class="orbs"><span></span><span></span><span></span></div>
     """,
     unsafe_allow_html=True,
 )
 
-with st.sidebar:
-    st.header("Checkpoint")
-    checkpoint = st.text_input("Path", value="models/best_model.pth", label_visibility="collapsed")
-    st.caption("File .pth sau khi train. Class = tên folder dataset, không phát hiện từng vật trong ảnh.")
+if "lang" not in st.session_state:
+    st.session_state.lang = "vi"
+if "checkpoint" not in st.session_state:
+    st.session_state.checkpoint = "models/best_model.pth"
 
-st.markdown('<p class="hero-title">CNNVISION</p>', unsafe_allow_html=True)
-st.markdown(
-    '<p class="hero-sub">Phân loại cả tấm ảnh thành một class đã train · tín hiệu nơ-ron mang tính minh họa</p>',
-    unsafe_allow_html=True,
-)
+st.markdown('<p class="brand">CNNVision</p>', unsafe_allow_html=True)
 
-uploaded = st.file_uploader(
-    "Kéo ảnh vào đây",
-    type=["bmp", "jpeg", "jpg", "png", "tif", "tiff", "webp"],
-)
+lang = st.session_state.lang
 
-if uploaded is None:
-    st.info("Cần `models/best_model.pth` rồi upload một ảnh. Kết quả là một nhãn cho cả tấm, không khoanh từng vật.")
-    st.markdown(idle_network_svg(), unsafe_allow_html=True)
-else:
-    left, right = st.columns([1, 1.15], gap="large")
-    with left:
-        st.image(uploaded, caption=uploaded.name, use_container_width=True)
 
-    suffix = Path(uploaded.name).suffix.lower() or ".png"
-    tmp_path: Path | None = None
-    try:
-        with tempfile.NamedTemporaryFile(delete=False, suffix=suffix) as tmp:
-            tmp.write(uploaded.getbuffer())
-            tmp_path = Path(tmp.name)
-        # Same path as predict.py: checkpoint preprocess, no augmentation.
-        result = predict_image(tmp_path, Path(checkpoint))
-        percent = result["confidence"] * 100
-        bars = "".join(
-            (
-                '<div class="prob-row">'
-                f'<div class="prob-name">{_safe(name)}</div>'
-                '<div class="prob-track">'
-                f'<div class="prob-fill" style="--p:{float(value):.4f}"></div>'
-                "</div>"
-                f'<div class="prob-val">{float(value) * 100:.1f}%</div>'
-                "</div>"
+def t(key: str) -> str:
+    return translate(lang, key)
+
+
+st.markdown(f'<p class="brand-sub">{_safe(t("subtitle"))}</p>', unsafe_allow_html=True)
+
+st.markdown(f'<p class="lang-label">{_safe(t("lang_bar"))}</p>', unsafe_allow_html=True)
+lang_cols = st.columns(3)
+for col, code in zip(lang_cols, LANG_LABELS):
+    with col:
+        selected = st.session_state.lang == code
+        if st.button(
+            LANG_LABELS[code],
+            use_container_width=True,
+            type="primary" if selected else "secondary",
+        ):
+            st.session_state.lang = code
+            st.rerun()
+
+left, right = st.columns([0.72, 1.28], gap="large")
+
+with left:
+    st.markdown(f'<div class="panel"><h3>{_safe(t("settings"))}</h3></div>', unsafe_allow_html=True)
+    st.text_input(t("checkpoint"), key="checkpoint")
+    st.caption(t("checkpoint_help"))
+    uploaded = st.file_uploader(t("upload"), type=["bmp", "jpeg", "jpg", "png", "tif", "tiff", "webp"])
+    checkpoint = Path(st.session_state.checkpoint)
+
+    result = None
+    if uploaded is None:
+        st.markdown(f'<div class="stage">{_safe(t("stage_empty"))}<br>{_safe(t("empty"))}</div>', unsafe_allow_html=True)
+    else:
+        suffix = Path(uploaded.name).suffix.lower() or ".png"
+        tmp_path: Path | None = None
+        try:
+            with tempfile.NamedTemporaryFile(delete=False, suffix=suffix) as tmp:
+                tmp.write(uploaded.getbuffer())
+                tmp_path = Path(tmp.name)
+            # Same path as predict.py: checkpoint preprocess, no augmentation.
+            result = predict_image(tmp_path, checkpoint)
+            percent = result["confidence"] * 100
+            chips = "".join(
+                (
+                    f'<span class="chip{" chip-on" if name == result["class_name"] else ""}">'
+                    f"{_safe(name)} {float(value) * 100:.0f}%</span>"
+                )
+                for name, value in result["probabilities"].items()
             )
-            for name, value in result["probabilities"].items()
-        )
-        with right:
+            st.image(uploaded, use_container_width=True)
             st.markdown(
                 (
-                    '<div class="pred-card">'
-                    f'<div class="pred-class">{_safe(result["class_name"])}</div>'
-                    f'<div class="pred-score">Độ tin cậy {percent:.1f}%</div>'
-                    f"{bars}"
+                    '<div class="plate">'
+                    f'<p class="plate-class">{_safe(result["class_name"])}</p>'
+                    f'<p class="plate-score">{_safe(t("confidence"))} {percent:.1f}%</p>'
+                    f'<div class="chips">{chips}</div>'
                     "</div>"
                 ),
                 unsafe_allow_html=True,
             )
-        st.markdown(
-            probability_network_svg(result["probabilities"], result["class_name"]),
-            unsafe_allow_html=True,
-        )
-        st.caption("INPUT → FEATURES → CLASSES. Nốt lớp ra theo Softmax; gạch chạy là hiệu ứng, không phải activation thật trong CNN.")
-    except (FileNotFoundError, ValueError, OSError, RuntimeError) as exc:
-        st.error(str(exc))
-    finally:
-        if tmp_path is not None:
-            tmp_path.unlink(missing_ok=True)
+        except (FileNotFoundError, ValueError, OSError, RuntimeError) as exc:
+            st.error(str(exc))
+        finally:
+            if tmp_path is not None:
+                tmp_path.unlink(missing_ok=True)
+
+with right:
+    st.markdown(f'<div class="panel"><h3>{_safe(t("schema"))}</h3></div>', unsafe_allow_html=True)
+    schema_svg = (
+        idle_network_svg()
+        if result is None
+        else probability_network_svg(result["probabilities"], result["class_name"])
+    )
+    st.markdown(f'<div class="schema-box">{schema_svg}</div>', unsafe_allow_html=True)
+    st.caption(t("schema_note"))
