@@ -14,7 +14,8 @@
 | Colab 笔记本 | 已实现 |
 | CI（PR 与 `main` 上的 unittest） | 已实现 |
 | 按 epoch 的 loss/accuracy 曲线 | 已实现 |
-| Web UI、摄像头、迁移学习、Grad-CAM | 计划中 |
+| Web UI（上传图片预测） | 已实现 |
+| 摄像头、迁移学习、Grad-CAM | 计划中 |
 
 README 不提供准确率或基准数字。结果取决于你的数据集。
 
@@ -82,6 +83,16 @@ python predict.py --image path/to/image.jpg --checkpoint models/best_model.pth
 
 打印类别名、置信度，以及每个类别的概率。
 
+## Web UI
+
+需要已有 `models/best_model.pth`。界面调用 `inference.predict_image`，不重新实现模型或预处理。
+
+```bash
+streamlit run app.py
+```
+
+浏览器中上传图片，显示类别、置信度和各类概率。默认打开 [http://localhost:8501](http://localhost:8501)。
+
 ## Google Colab
 
 1. 打开 `notebooks/train_colab.ipynb`。
@@ -111,5 +122,5 @@ evaluation/      测试集指标
 inference/       单张图片预测
 visualization/   混淆矩阵、训练曲线
 notebooks/       Colab
-train.py  evaluate.py  predict.py
+train.py  evaluate.py  predict.py  app.py
 ```
