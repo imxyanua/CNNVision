@@ -7,20 +7,10 @@ import numpy as np
 import torch
 
 from evaluation.metrics import compute_classification_metrics
-from models.checkpoint import load_model_from_checkpoint
+from models.checkpoint import class_names_from_checkpoint, load_model_from_checkpoint
 from training.dataset import build_dataloaders
 from training.device import select_device
 from visualization.confusion import save_confusion_matrix
-
-
-def class_names_from_checkpoint(payload: dict) -> list[str]:
-    class_to_idx = payload["class_to_idx"]
-    names: list[str | None] = [None] * len(class_to_idx)
-    for name, idx in class_to_idx.items():
-        names[int(idx)] = str(name)
-    if any(name is None for name in names):
-        raise ValueError("Checkpoint class_to_idx is missing an index")
-    return [str(name) for name in names]
 
 
 def evaluate_model(
