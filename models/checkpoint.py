@@ -33,3 +33,13 @@ def load_model_from_checkpoint(
     model = build_cnn_from_settings(payload["model"])
     model.load_state_dict(payload["model_state_dict"])
     return model, payload
+
+
+def class_names_from_checkpoint(payload: dict) -> list[str]:
+    class_to_idx = payload["class_to_idx"]
+    names: list[str | None] = [None] * len(class_to_idx)
+    for name, idx in class_to_idx.items():
+        names[int(idx)] = str(name)
+    if any(name is None for name in names):
+        raise ValueError("Checkpoint class_to_idx is missing an index")
+    return [str(name) for name in names]
