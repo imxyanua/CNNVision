@@ -13,8 +13,8 @@ Hệ thống phân loại ảnh **nhiều lớp** bằng CNN (PyTorch). Tên cla
 | `predict.py` (một ảnh) | Implemented |
 | Notebook Colab | Implemented |
 | CI (unittest trên PR và `main`) | Implemented |
+| Biểu đồ loss/accuracy theo epoch | Implemented |
 | Web UI, webcam, transfer learning, Grad-CAM | Planned |
-| Biểu đồ loss/accuracy theo epoch | Planned |
 
 Không có số accuracy hay benchmark trong README. Kết quả phụ thuộc dataset của bạn.
 
@@ -60,9 +60,9 @@ Split mặc định 70/15/15, seed 42, danh sách file lưu `dataset/split.json`
 python train.py --dataset dataset --epochs 10
 ```
 
-Cờ chính: `--output` (mặc định `models/best_model.pth`), `--batch-size` (32), `--lr` (0.001), `--image-size` (224), `--color-mode` (`rgb` hoặc `grayscale`), `--seed` (42), `--workers` (0), `--device` (`cpu` / `cuda` / bỏ trống = tự chọn).
+Cờ chính: `--output` (mặc định `models/best_model.pth`), `--output-dir` (mặc định `outputs`), `--batch-size` (32), `--lr` (0.001), `--image-size` (224), `--color-mode` (`rgb` hoặc `grayscale`), `--seed` (42), `--workers` (0), `--device` (`cpu` / `cuda` / bỏ trống = tự chọn).
 
-Device: CUDA nếu có, không thì CPU. Checkpoint tốt nhất theo **validation accuracy**. File `.pth` gồm weights, `num_classes`, class map, preprocess, epoch, metric. File này gitignored.
+Device: CUDA nếu có, không thì CPU. Checkpoint tốt nhất theo **validation accuracy**. File `.pth` gồm weights, `num_classes`, class map, preprocess, epoch, toàn bộ history, metric. File này gitignored. Sau train ghi `outputs/training_curves.png` (loss/accuracy train và val).
 
 ## Evaluate
 
@@ -109,7 +109,7 @@ training/        split, dataloader, vòng train
 models/          SimpleCNN + checkpoint
 evaluation/      metric trên test
 inference/       đoán một ảnh
-visualization/   confusion matrix
+visualization/   confusion matrix, training curves
 notebooks/       Colab
 train.py  evaluate.py  predict.py
 ```

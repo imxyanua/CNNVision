@@ -13,8 +13,8 @@ A **multi-class** image classifier using a CNN (PyTorch). Class names come from 
 | `predict.py` (one image) | Implemented |
 | Colab notebook | Implemented |
 | CI (unittest on PRs and `main`) | Implemented |
+| Loss/accuracy curves per epoch | Implemented |
 | Web UI, webcam, transfer learning, Grad-CAM | Planned |
-| Loss/accuracy curves per epoch | Planned |
 
 This README does not report accuracy or benchmark numbers. Results depend on your dataset.
 
@@ -60,9 +60,9 @@ Default split is 70/15/15, seed 42. File lists are saved to `dataset/split.json`
 python train.py --dataset dataset --epochs 10
 ```
 
-Main flags: `--output` (default `models/best_model.pth`), `--batch-size` (32), `--lr` (0.001), `--image-size` (224), `--color-mode` (`rgb` or `grayscale`), `--seed` (42), `--workers` (0), `--device` (`cpu` / `cuda` / omit to auto-select).
+Main flags: `--output` (default `models/best_model.pth`), `--output-dir` (default `outputs`), `--batch-size` (32), `--lr` (0.001), `--image-size` (224), `--color-mode` (`rgb` or `grayscale`), `--seed` (42), `--workers` (0), `--device` (`cpu` / `cuda` / omit to auto-select).
 
-Device: CUDA when available, otherwise CPU. The best checkpoint is chosen by **validation accuracy**. The `.pth` file stores weights, `num_classes`, the class map, preprocess settings, epoch, and metrics. It is gitignored.
+Device: CUDA when available, otherwise CPU. The best checkpoint is chosen by **validation accuracy**. The `.pth` file stores weights, `num_classes`, the class map, preprocess settings, epoch, full history, and metrics. It is gitignored. After training, `outputs/training_curves.png` shows train/val loss and accuracy.
 
 ## Evaluate
 
@@ -109,7 +109,7 @@ training/        split, dataloaders, train loop
 models/          SimpleCNN + checkpoint
 evaluation/      test-set metrics
 inference/       one-image prediction
-visualization/   confusion matrix
+visualization/   confusion matrix, training curves
 notebooks/       Colab
 train.py  evaluate.py  predict.py
 ```

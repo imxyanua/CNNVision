@@ -8,7 +8,7 @@ import torch
 from torch import nn
 from torch.utils.data import DataLoader
 
-from models.checkpoint import save_checkpoint
+from models.checkpoint import load_checkpoint, save_checkpoint
 from models.cnn import build_cnn
 from preprocessing.transforms import (
     DEFAULT_COLOR_MODE,
@@ -18,6 +18,7 @@ from preprocessing.transforms import (
 from training.dataset import build_dataloaders
 from training.device import select_device
 from training.split import DEFAULT_SEED
+from visualization.curves import save_training_curves
 
 
 def set_seed(seed: int) -> None:
@@ -40,6 +41,7 @@ def train_model(
     seed: int = DEFAULT_SEED,
     num_workers: int = 0,
     device: str | None = None,
+    output_dir: str | Path = Path("outputs"),
 ) -> dict:
     if epochs < 1:
         raise ValueError(f"epochs must be >= 1, got {epochs}")
@@ -122,8 +124,15 @@ def train_model(
     if saved_path is None:
         raise RuntimeError("No checkpoint was saved")
 
+    # Keep best weights; rewrite history so the plot covers every epoch, not only the best one.
+    payload = load_checkpoint(saved_path, map_location="cpu")
+    payload["history"] = history
+    save_checkpoint(saved_path, payload)
+
+    curves_path = save_training_curves(history, Path(output_dir) / "training_curves.png")
     print(f"Best val_acc={best_val_acc:.4f} at epoch {best_epoch}")
     print(f"Saved {saved_path}")
+    print(f"Saved {curves_path}")
     return {
         "checkpoint": saved_path,
         "best_epoch": best_epoch,
@@ -133,6 +142,7 @@ def train_model(
         "class_to_idx": dataset_split.class_to_idx,
         "device": str(torch_device),
         "num_classes": dataset_split.num_classes,
+        "curves_path": curves_path,
     }
 
 

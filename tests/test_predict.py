@@ -33,6 +33,7 @@ class PredictImageTest(unittest.TestCase):
             seed=0,
             device="cpu",
             num_workers=0,
+            output_dir=cls.root / "train_outputs",
         )
 
     @classmethod
