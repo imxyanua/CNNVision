@@ -91,7 +91,7 @@ Requires `models/best_model.pth`. The page calls `inference.predict_image` and d
 streamlit run app.py
 ```
 
-Upload an image in the browser to see the class, confidence, and per-class probabilities. Default URL: [http://localhost:8501](http://localhost:8501).
+Upload an image: the photo on the left, class and confidence on the right, and a schematic network below (output nodes light up from Softmax scores; they are not real CNN activations). Default URL: [http://localhost:8501](http://localhost:8501). This labels the whole image, and does not draw boxes around objects.
 
 ## Google Colab
 
@@ -120,7 +120,7 @@ training/        split, dataloaders, train loop
 models/          SimpleCNN + checkpoint
 evaluation/      test-set metrics
 inference/       one-image prediction
-visualization/   confusion matrix, training curves
+visualization/   confusion matrix, training curves, schematic network
 notebooks/       Colab
 train.py  evaluate.py  predict.py  app.py
 ```
