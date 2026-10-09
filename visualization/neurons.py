@@ -12,14 +12,14 @@ def probability_network_svg(
     if not classes:
         raise ValueError("probabilities is empty")
 
-    width, height = 860, 340
+    width, height = 1100, 580
     layers = [
-        _layer_points(72, 7, height),
-        _layer_points(290, 9, height),
-        _layer_points(510, 9, height),
-        _layer_points(720, len(classes), height),
+        _layer_points(80, 7, height),
+        _layer_points(360, 9, height),
+        _layer_points(650, 9, height),
+        _layer_points(920, len(classes), height),
     ]
-    titles = [(72, "INPUT"), (290, "CONV"), (510, "FEATURES"), (720, "CLASSES")]
+    titles = [(80, "INPUT"), (360, "CONV"), (650, "FEATURES"), (920, "CLASSES")]
 
     parts: list[str] = []
     path_id = 0
@@ -43,20 +43,20 @@ def probability_network_svg(
             if i == 3:
                 name, prob = classes[j]
                 active = name == predicted
-                radius = 9 + 10 * float(prob)
+                radius = 13 + 12 * float(prob)
                 fill = "#1f4d8f" if active else "#6a645a"
                 parts.append(_node(x, y, radius, fill, glow=active, delay=0.15 * j, ping=active, core=True))
                 label = html.escape(str(name))
                 parts.append(
-                    f'<text x="{x + 24}" y="{y + 4}" fill="#1c1c1c" font-size="14" '
+                    f'<text x="{x + 28}" y="{y + 5}" fill="#1c1c1c" font-size="16" '
                     f'font-family="Segoe UI, sans-serif">{label} {float(prob) * 100:.0f}%</text>'
                 )
             else:
                 fill = "#3f3a34" if i else "#2b2b2b"
-                parts.append(_node(x, y, 8 if i else 7, fill, glow=False, delay=0.1 * j, ping=False, core=True))
+                parts.append(_node(x, y, 12 if i else 11, fill, glow=False, delay=0.1 * j, ping=False, core=True))
 
     heading = "".join(
-        f'<text x="{x}" y="22" fill="#5a564e" font-size="11" font-family="Segoe UI, sans-serif">{title}</text>'
+        f'<text x="{x}" y="26" fill="#5a564e" font-size="14" font-family="Segoe UI, sans-serif">{title}</text>'
         for x, title in titles
     )
     return _wrap(width, height, heading + "".join(parts))

@@ -41,7 +41,8 @@ st.markdown(
         100% { transform: translate(-10%, 8%); }
       }
       .stApp { background: #10131a; color: #ecece6; }
-      .block-container { padding-top: 0.8rem; max-width: 1400px; }
+      .block-container { padding-top: 0.8rem; max-width: 1600px; }
+      .schema-box svg { min-height: 520px; }
       header[data-testid="stHeader"] { background: transparent; }
       .orbs span {
         position: fixed;
@@ -141,7 +142,7 @@ for col, code in zip(lang_cols, LANG_LABELS):
             st.session_state.lang = code
             st.rerun()
 
-left, right = st.columns([0.92, 1.08], gap="large")
+left, right = st.columns([0.72, 1.28], gap="large")
 
 with left:
     st.markdown(f'<div class="panel"><h3>{_safe(t("settings"))}</h3></div>', unsafe_allow_html=True)
@@ -189,11 +190,10 @@ with left:
 
 with right:
     st.markdown(f'<div class="panel"><h3>{_safe(t("schema"))}</h3></div>', unsafe_allow_html=True)
-    if result is None:
-        st.markdown(idle_network_svg(), unsafe_allow_html=True)
-    else:
-        st.markdown(
-            probability_network_svg(result["probabilities"], result["class_name"]),
-            unsafe_allow_html=True,
-        )
+    schema_svg = (
+        idle_network_svg()
+        if result is None
+        else probability_network_svg(result["probabilities"], result["class_name"])
+    )
+    st.markdown(f'<div class="schema-box">{schema_svg}</div>', unsafe_allow_html=True)
     st.caption(t("schema_note"))
