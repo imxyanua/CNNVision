@@ -10,6 +10,8 @@ class NeuronSvgTest(unittest.TestCase):
         self.assertIn("cat 90%", svg)
         self.assertIn("dog 10%", svg)
         self.assertIn("CLASSES", svg)
+        self.assertIn("@keyframes dash", svg)
+        self.assertIn("class=\"flow", svg)
 
     def test_escapes_class_names(self) -> None:
         svg = probability_network_svg({"a<b": 1.0}, predicted="a<b")
