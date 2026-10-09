@@ -91,7 +91,7 @@ Cần có `models/best_model.pth`. Trang gọi `inference.predict_image`, không
 streamlit run app.py
 ```
 
-Upload ảnh trên trình duyệt để xem class, confidence và xác suất từng class. Mặc định: [http://localhost:8501](http://localhost:8501).
+Upload ảnh: trái là ảnh, phải là class và độ tin cậy, dưới là sơ đồ nơ-ron minh họa (nốt lớp ra sáng theo Softmax, không phải activation thật trong CNN). Mặc định: [http://localhost:8501](http://localhost:8501). Đây là gắn một nhãn cho cả tấm, không khoanh từng vật.
 
 ## Google Colab
 
@@ -120,7 +120,7 @@ training/        split, dataloader, vòng train
 models/          SimpleCNN + checkpoint
 evaluation/      metric trên test
 inference/       đoán một ảnh
-visualization/   confusion matrix, training curves
+visualization/   confusion matrix, training curves, sơ đồ nơ-ron
 notebooks/       Colab
 train.py  evaluate.py  predict.py  app.py
 ```
