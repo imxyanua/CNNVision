@@ -14,7 +14,8 @@ Hệ thống phân loại ảnh **nhiều lớp** bằng CNN (PyTorch). Tên cla
 | Notebook Colab | Implemented |
 | CI (unittest trên PR và `main`) | Implemented |
 | Biểu đồ loss/accuracy theo epoch | Implemented |
-| Web UI, webcam, transfer learning, Grad-CAM | Planned |
+| Web UI (upload ảnh để đoán) | Implemented |
+| Webcam, transfer learning, Grad-CAM | Planned |
 
 Không có số accuracy hay benchmark trong README. Kết quả phụ thuộc dataset của bạn.
 
@@ -82,6 +83,16 @@ python predict.py --image path/to/image.jpg --checkpoint models/best_model.pth
 
 In tên class, confidence, và xác suất từng class.
 
+## Web UI
+
+Cần có `models/best_model.pth`. Trang gọi `inference.predict_image`, không viết lại model hay preprocess.
+
+```bash
+streamlit run app.py
+```
+
+Upload ảnh trên trình duyệt để xem class, confidence và xác suất từng class. Mặc định: [http://localhost:8501](http://localhost:8501).
+
 ## Google Colab
 
 1. Mở `notebooks/train_colab.ipynb`.
@@ -111,5 +122,5 @@ evaluation/      metric trên test
 inference/       đoán một ảnh
 visualization/   confusion matrix, training curves
 notebooks/       Colab
-train.py  evaluate.py  predict.py
+train.py  evaluate.py  predict.py  app.py
 ```

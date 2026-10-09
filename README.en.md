@@ -14,7 +14,8 @@ A **multi-class** image classifier using a CNN (PyTorch). Class names come from 
 | Colab notebook | Implemented |
 | CI (unittest on PRs and `main`) | Implemented |
 | Loss/accuracy curves per epoch | Implemented |
-| Web UI, webcam, transfer learning, Grad-CAM | Planned |
+| Web UI (upload an image to predict) | Implemented |
+| Webcam, transfer learning, Grad-CAM | Planned |
 
 This README does not report accuracy or benchmark numbers. Results depend on your dataset.
 
@@ -82,6 +83,16 @@ python predict.py --image path/to/image.jpg --checkpoint models/best_model.pth
 
 Prints the class name, confidence, and per-class probabilities.
 
+## Web UI
+
+Requires `models/best_model.pth`. The page calls `inference.predict_image` and does not reimplement the model or preprocessing.
+
+```bash
+streamlit run app.py
+```
+
+Upload an image in the browser to see the class, confidence, and per-class probabilities. Default URL: [http://localhost:8501](http://localhost:8501).
+
 ## Google Colab
 
 1. Open `notebooks/train_colab.ipynb`.
@@ -111,5 +122,5 @@ evaluation/      test-set metrics
 inference/       one-image prediction
 visualization/   confusion matrix, training curves
 notebooks/       Colab
-train.py  evaluate.py  predict.py
+train.py  evaluate.py  predict.py  app.py
 ```

@@ -17,6 +17,9 @@ env/
 # Jupyter
 .ipynb_checkpoints/
 
+# Streamlit
+.streamlit/
+
 # Dataset images (keep the folder)
 dataset/*
 !dataset/.gitkeep
