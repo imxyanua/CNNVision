@@ -91,7 +91,7 @@ Cần có `models/best_model.pth`. Trang gọi `inference.predict_image`, không
 streamlit run app.py
 ```
 
-Đổi ngôn ngữ trên trang: Tiếng Việt / 中文 / English. Trái ảnh, phải class và độ tin cậy, dưới sơ đồ minh họa. Mặc định: [http://localhost:8501](http://localhost:8501). Gắn một nhãn cho cả tấm, không khoanh từng vật.
+Đổi ngôn ngữ: Tiếng Việt / 中文 / English. Ảnh lớn trong khung, class và % nằm thanh dưới ảnh; sơ đồ để trong mục gập. Mặc định: [http://localhost:8501](http://localhost:8501). Gắn một nhãn cho cả tấm, không khoanh từng vật.
 
 ## Google Colab
 

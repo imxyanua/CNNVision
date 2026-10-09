@@ -17,6 +17,8 @@ TEXT = {
         "image": "Ảnh",
         "schema": "Sơ đồ minh họa",
         "schema_note": "INPUT → CONV → FEATURES → CLASSES. Nốt lớp ra theo Softmax, không phải neuron thật trong CNN.",
+        "settings": "Cài đặt",
+        "stage_empty": "Thả ảnh vào khung dưới",
     },
     "zh": {
         "subtitle": "给整张图片一个类别。不会框出图中的每个物体。",
@@ -30,6 +32,8 @@ TEXT = {
         "image": "图片",
         "schema": "示意图",
         "schema_note": "INPUT → CONV → FEATURES → CLASSES。输出节点按 Softmax，不是 CNN 内部真实神经元。",
+        "settings": "设置",
+        "stage_empty": "把图片放到下面的画框",
     },
     "en": {
         "subtitle": "Assigns one label to the whole image. It does not box objects in the photo.",
@@ -43,6 +47,8 @@ TEXT = {
         "image": "Image",
         "schema": "Schematic",
         "schema_note": "INPUT → CONV → FEATURES → CLASSES. Output nodes follow Softmax, not real neurons inside the CNN.",
+        "settings": "Settings",
+        "stage_empty": "Drop an image into the frame below",
     },
 }
 
