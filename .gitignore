@@ -17,8 +17,8 @@ env/
 # Jupyter
 .ipynb_checkpoints/
 
-# Streamlit
-.streamlit/
+# Streamlit local secrets only; keep theme config in the repo
+.streamlit/secrets.toml
 
 # Dataset images (keep the folder)
 dataset/*

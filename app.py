@@ -40,9 +40,22 @@ st.markdown(
         50% { transform: translate(8%, -12%); }
         100% { transform: translate(-10%, 8%); }
       }
-      .stApp { background: #10131a; color: #ecece6; }
+      .stApp, [data-testid="stAppViewContainer"], [data-testid="stHeader"] {
+        background: #10131a;
+        color: #ecece6;
+      }
+      [data-testid="stMarkdownContainer"] { background: transparent !important; }
       .block-container { padding-top: 0.8rem; max-width: 1600px; }
-      .schema-box svg { min-height: 520px; }
+      .schema-box {
+        background: #10131a;
+        border-radius: 14px;
+        overflow: hidden;
+      }
+      .schema-box svg {
+        min-height: 520px;
+        background: #10131a;
+        display: block;
+      }
       header[data-testid="stHeader"] { background: transparent; }
       .orbs span {
         position: fixed;

@@ -154,7 +154,7 @@ def _node(
 def _wrap(width: int, height: int, inner: str) -> str:
     return (
         f'<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" '
-        f'viewBox="0 0 {width} {height}" width="100%" role="img" aria-label="CNN schematic">'
+        f'viewBox="0 0 {width} {height}" width="100%" style="background:#10131a" role="img" aria-label="CNN schematic">'
         "<defs>"
         '<filter id="glow" x="-80%" y="-80%" width="260%" height="260%">'
         '<feGaussianBlur stdDeviation="4.5" result="blur"/>'
@@ -174,7 +174,7 @@ def _wrap(width: int, height: int, inner: str) -> str:
         ".ping-slow { animation-duration: 2s; animation-delay: 0.4s; }"
         "</style>"
         "</defs>"
-        f'<rect width="{width}" height="{height}" rx="14" fill="#141822" stroke="rgba(255,255,255,0.08)"/>'
+        f'<rect width="{width}" height="{height}" rx="14" fill="#10131a" stroke="rgba(255,255,255,0.08)"/>'
         f"{inner}"
         "</svg>"
     )
