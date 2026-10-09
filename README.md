@@ -13,8 +13,8 @@
 | `predict.py`（单张图片） | 已实现 |
 | Colab 笔记本 | 已实现 |
 | CI（PR 与 `main` 上的 unittest） | 已实现 |
+| 按 epoch 的 loss/accuracy 曲线 | 已实现 |
 | Web UI、摄像头、迁移学习、Grad-CAM | 计划中 |
-| 按 epoch 的 loss/accuracy 曲线 | 计划中 |
 
 README 不提供准确率或基准数字。结果取决于你的数据集。
 
@@ -60,9 +60,9 @@ dataset/
 python train.py --dataset dataset --epochs 10
 ```
 
-主要参数：`--output`（默认 `models/best_model.pth`）、`--batch-size`（32）、`--lr`（0.001）、`--image-size`（224）、`--color-mode`（`rgb` 或 `grayscale`）、`--seed`（42）、`--workers`（0）、`--device`（`cpu` / `cuda` / 省略则自动选择）。
+主要参数：`--output`（默认 `models/best_model.pth`）、`--output-dir`（默认 `outputs`）、`--batch-size`（32）、`--lr`（0.001）、`--image-size`（224）、`--color-mode`（`rgb` 或 `grayscale`）、`--seed`（42）、`--workers`（0）、`--device`（`cpu` / `cuda` / 省略则自动选择）。
 
-设备：有 CUDA 用 CUDA，否则 CPU。按 **验证集 accuracy** 保存最佳 checkpoint。`.pth` 含 weights、`num_classes`、类别映射、预处理配置、epoch、指标。该文件已被 gitignore。
+设备：有 CUDA 用 CUDA，否则 CPU。按 **验证集 accuracy** 保存最佳 checkpoint。`.pth` 含 weights、`num_classes`、类别映射、预处理配置、epoch、完整 history、指标。该文件已被 gitignore。训练结束后写入 `outputs/training_curves.png`（train/val 的 loss 与 accuracy）。
 
 ## 评估
 
@@ -109,7 +109,7 @@ training/        划分、dataloader、训练循环
 models/          SimpleCNN + checkpoint
 evaluation/      测试集指标
 inference/       单张图片预测
-visualization/   混淆矩阵
+visualization/   混淆矩阵、训练曲线
 notebooks/       Colab
 train.py  evaluate.py  predict.py
 ```

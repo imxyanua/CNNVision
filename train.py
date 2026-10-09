@@ -20,6 +20,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--seed", type=int, default=DEFAULT_SEED)
     parser.add_argument("--workers", type=int, default=0)
     parser.add_argument("--device", default=None, help="cpu, cuda, or omit to auto-select")
+    parser.add_argument("--output-dir", type=Path, default=Path("outputs"))
     return parser.parse_args()
 
 
@@ -36,6 +37,7 @@ def main() -> None:
         seed=args.seed,
         num_workers=args.workers,
         device=args.device,
+        output_dir=args.output_dir,
     )
 
 

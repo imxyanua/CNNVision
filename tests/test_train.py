@@ -36,8 +36,11 @@ class TrainLoopTest(unittest.TestCase):
             seed=0,
             device="cpu",
             num_workers=0,
+            output_dir=self.root / "outputs",
         )
         self.assertTrue(self.ckpt.is_file())
+        self.assertTrue((self.root / "outputs" / "training_curves.png").is_file())
+        self.assertTrue(result["curves_path"].is_file())
         self.assertEqual(result["num_classes"], 2)
         self.assertEqual(result["best_epoch"], 1)
         self.assertEqual(set(result["class_to_idx"]), {"alpha", "beta"})
@@ -60,8 +63,24 @@ class TrainLoopTest(unittest.TestCase):
             image_size=32,
             seed=1,
             device="cpu",
+            output_dir=self.root / "outputs",
         )
         model, payload = load_model_from_checkpoint(self.ckpt, map_location="cpu")
         model.eval()
         logits = model(torch.randn(2, 3, 32, 32))
         self.assertEqual(tuple(logits.shape), (2, payload["model"]["num_classes"]))
+
+    def test_checkpoint_history_covers_every_epoch(self) -> None:
+        train_model(
+            self.root,
+            output_path=self.ckpt,
+            epochs=2,
+            batch_size=4,
+            image_size=32,
+            seed=2,
+            device="cpu",
+            output_dir=self.root / "outputs",
+        )
+        _model, payload = load_model_from_checkpoint(self.ckpt, map_location="cpu")
+        self.assertEqual(len(payload["history"]), 2)
+        self.assertEqual([row["epoch"] for row in payload["history"]], [1, 2])
